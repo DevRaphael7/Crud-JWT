@@ -1,119 +1,91 @@
+import jwt from 'jsonwebtoken';
 import { BackendResponse } from './interfaces/backendResponse.model';
 import { User } from './interfaces/auth-user.model';
 import { NextFunction, Request, Response } from 'Express';
 
 let usuarios: User[] = []
 
-//Recuperar usuário
-export const getUser = async (req: Request, res: Response, next: NextFunction) => {
-    try{
-        const bodyRequest: User = req.body;
+export class Auth {
 
-        let responseBack: BackendResponse;
+    public loginUser = async (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const bodyRequest: User = req.body;
 
-        if(!(bodyRequest.name && bodyRequest.email && bodyRequest.password)) {
-
-            responseBack = {
-                statusCode: 400,
-                data: {
-                    message: "Valores inválidos!",
-                    data: null
-                }
+            if(!(bodyRequest.name && bodyRequest.email && bodyRequest.password)) {
+                return res.status(400).json(this.apiResponse(400, "Valores inválidos"))
             }
 
-            return res.status(400).json(responseBack)
-        }
-
-        if(bodyRequest.password != bodyRequest.confirmPassword) {
-            responseBack = {
-                statusCode: 400,
-                data: {
-                    message: "Senha e confirmar senha diferentes",
-                    data: null
-                }
+            if(bodyRequest.password != bodyRequest.confirmPassword) {
+                return res.status(400).json(this.apiResponse(400, "Senha e confirmar senha diferentes"))
             }
 
-            return res.status(400).json(responseBack)
-        }
+            const findUser = usuarios.filter(value => value.name == bodyRequest.name && value.email == bodyRequest.email)
+            
+            if(findUser.length > 0){
+                return res.status(200).json(this.apiResponse(200, "Usuário encontrado", findUser[0]))
+            }
 
-        const findUser = usuarios.filter(value => 
-            value.name == bodyRequest.name && value.email == bodyRequest.email)
+            res.status(400).json(this.apiResponse(400, "Usuário inválido ou não encontrado"))
+        } catch(ex) {
+            next(ex)
+        }
+    }
+    
+
+    public registerUser = async (req: Request, res: Response, next: NextFunction) => {
+        try{
+            const bodyRequest: User = req.body;
         
-        if(findUser.length > 0){
-            responseBack = {
-                statusCode: 200,
-                data: {
-                    data: bodyRequest,
-                    message: "Usuário encontrado!"
-                }
+            if(!(bodyRequest.name && bodyRequest.email && bodyRequest.password)) {
+                return res.status(400).json(this.apiResponse(400, "Valores inválidos"))
             }
     
-            return res.status(200).json(responseBack)
+            const findUser = usuarios.filter(value => value.name == bodyRequest.name && value.email == bodyRequest.email)
+            
+            if(findUser.length > 0) {
+                return res.status(200).json(this.apiResponse(400, "Usuário já cadastrado"))
+            }
+    
+            bodyRequest.token = this.getToken(bodyRequest.name, bodyRequest.email);
+            usuarios.push(bodyRequest)
+    
+            res.status(200).json(this.apiResponse(200, "Usuário adicionado com sucesso"))
+        } catch(ex){
+            next(ex)
         }
+    }
 
-        responseBack = {
+    private apiResponse(statusCode: number, message: string, data: any = null): BackendResponse {
+        return {
+            statusCode: statusCode,
             data: {
-                message: "Usuário inválido ou não existe",
-                data: null
+                value: data,
+                message: message
+            }
+        }
+    }
+
+    private getToken(name: string, email: string) {
+        return jwt.sign(
+            { 
+                user_id: name, 
+                email: email 
             },
-            statusCode: 400
-        }
+            process.env.TOKEN_KEY as string,
+            {
+                expiresIn: "1h"
+            }
+        );
+    }
 
-        res.status(400).json(responseBack)
+    private verifyTokenIsValid(token: string, req: Request): boolean {
+        let tokenValid = false
+        jwt.verify(token, process.env.TOKEN_KEY as string, (error, _) => {
+            if(!error){
+                tokenValid = true;
+            }
+        })
 
-    } catch(ex) {
-        next(ex)
+        return tokenValid
     }
 }
-
-export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
-    try{
-        const bodyRequest: User = req.body;
-        let responseBack: BackendResponse;
-    
-        if(!(bodyRequest.name && bodyRequest.email && bodyRequest.password)) {
-            responseBack = {
-                statusCode: 400,
-                data: {
-                    message: "Valores inválidos!",
-                    data: null
-                }
-            }
-
-            return res.status(400).json(responseBack)
-        }
-
-        const findUser = usuarios.filter(value => 
-            value.name == bodyRequest.name && value.email == bodyRequest.email)
-        
-        if(findUser.length > 0){
-            responseBack = {
-                statusCode: 400,
-                data: {
-                    data: null,
-                    message: "Usuário já cadastrado"
-                }
-            }
-    
-            return res.status(200).json(responseBack)
-        }
-        
-        
-
-        usuarios.push(bodyRequest)
-
-        responseBack = {
-            statusCode: 200,
-            data: {
-                message: "Usuário adicionado com sucesso!",
-                data: null
-            }
-        }
-
-        res.status(200).json(responseBack)
-    } catch(ex){
-        next(ex)
-    }
-}
-
-

@@ -5,5 +5,5 @@ export interface BackendResponse {
 
 interface Data {
     message: string;
-    data: any;
+    value: any;
 }

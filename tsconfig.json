@@ -2,20 +2,22 @@
   "compilerOptions": {
       "forceConsistentCasingInFileNames": true,
       "module": "commonjs",
+      "moduleResolution": "node",
       "esModuleInterop": true,
       "outDir": "./build",
-      "rootDir": "./source",
+      "rootDir": "./",
       "target": "es6",
       "skipLibCheck": true,
       "strict": true,
       "composite": true,
-      "resolveJsonModule": true 
+      "resolveJsonModule": true,
+      "baseUrl": ".",
+      "paths": {
+        "@controllers/*": ["./controllers/*"],
+        "@routes/*": ["./routes/*"] 
+      }
   },
   "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
+    "./**/*"
   ]
 }

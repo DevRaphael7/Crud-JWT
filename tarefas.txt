@@ -1,0 +1,2 @@
+1) Obter o TOKEN no login
+2) Fazer teste unitário

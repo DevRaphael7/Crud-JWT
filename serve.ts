@@ -1,8 +1,10 @@
-import { PORT } from './config/constaints';
 import express, { Express } from 'express';
-import auth from './routes/auth/auth'
+import 'dotenv/config'
+import auth from '@routes/auth/auth'
 
 const app: Express = express();
+
+const { PORT } = process.env;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
