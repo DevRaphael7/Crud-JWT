@@ -1,2 +1,5 @@
 1) Obter o TOKEN no login
 2) Fazer teste unitário
+3) Fazer teste para usuário
+
+@set PATH=C:\Program Files (x86)\Cmander\Cmder.exe;%PATH%

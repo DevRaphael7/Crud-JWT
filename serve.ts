@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import 'dotenv/config'
 import auth from '@routes/auth/auth'
 
-const app: Express = express();
+export const app: Express = express();
 
 const { PORT } = process.env;
 

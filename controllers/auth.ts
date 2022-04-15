@@ -3,7 +3,14 @@ import { BackendResponse } from './interfaces/backendResponse.model';
 import { User } from './interfaces/auth-user.model';
 import { NextFunction, Request, Response } from 'Express';
 
-let usuarios: User[] = []
+let usuarios: User[] = [
+    {
+        confirmPassword: '123',
+        password: '123',
+        email: 'raphael@email.com',
+        name: 'raphael'
+    }
+]
 
 export class Auth {
 
@@ -25,7 +32,7 @@ export class Auth {
                 return res.status(200).json(this.apiResponse(200, "Usuário encontrado", findUser[0]))
             }
 
-            res.status(400).json(this.apiResponse(400, "Usuário inválido ou não encontrado"))
+            return res.status(400).json(this.apiResponse(400, "Usuário inválido ou não encontrado"))
         } catch(ex) {
             next(ex)
         }
@@ -49,13 +56,13 @@ export class Auth {
             bodyRequest.token = this.getToken(bodyRequest.name, bodyRequest.email);
             usuarios.push(bodyRequest)
     
-            res.status(200).json(this.apiResponse(200, "Usuário adicionado com sucesso"))
+            return res.status(200).json(this.apiResponse(200, "Usuário adicionado com sucesso"))
         } catch(ex){
             next(ex)
         }
     }
 
-    private apiResponse(statusCode: number, message: string, data: any = null): BackendResponse {
+    public apiResponse(statusCode: number, message: string, data: any = null): BackendResponse {
         return {
             statusCode: statusCode,
             data: {
