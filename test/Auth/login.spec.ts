@@ -1,5 +1,5 @@
 import { User } from '../../controllers/interfaces/auth-user.model';
-import { Auth } from '@controllers/auth';
+import { Auth } from '@controllers/authController';
 import request from "supertest";
 import { app } from 'serve';
 
@@ -47,6 +47,6 @@ describe("Test in userController (loginUser)", () => {
     })
 
     it('Token is valid or no', () => {
-        
+
     })
 })

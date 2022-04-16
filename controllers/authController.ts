@@ -1,6 +1,5 @@
-import jwt from 'jsonwebtoken';
-import { BackendResponse } from './interfaces/backendResponse.model';
-import { User } from './interfaces/auth-user.model';
+import { ControllerHttp } from './controllerHttp';
+import { User } from '@interfaces/auth-user.model';
 import { NextFunction, Request, Response } from 'Express';
 
 let usuarios: User[] = [
@@ -12,7 +11,11 @@ let usuarios: User[] = [
     }
 ]
 
-export class Auth {
+export class Auth extends ControllerHttp {
+
+    constructor(){
+        super();
+    }
 
     public loginUser = async (req: Request, res: Response, next: NextFunction) => {
         try{
@@ -60,39 +63,5 @@ export class Auth {
         } catch(ex){
             next(ex)
         }
-    }
-
-    public apiResponse(statusCode: number, message: string, data: any = null): BackendResponse {
-        return {
-            statusCode: statusCode,
-            data: {
-                value: data,
-                message: message
-            }
-        }
-    }
-
-    private getToken(name: string, email: string) {
-        return jwt.sign(
-            { 
-                user_id: name, 
-                email: email 
-            },
-            process.env.TOKEN_KEY as string,
-            {
-                expiresIn: "1h"
-            }
-        );
-    }
-
-    private verifyTokenIsValid(token: string, req: Request): boolean {
-        let tokenValid = false
-        jwt.verify(token, process.env.TOKEN_KEY as string, (error, _) => {
-            if(!error){
-                tokenValid = true;
-            }
-        })
-
-        return tokenValid
     }
 }
