@@ -16,7 +16,8 @@
       "paths": {
         "@controllers/*": ["./controllers/*"],
         "@routes/*": ["./routes/*"],
-        "@interfaces/*": ["./controllers/interfaces/*"]
+        "@interfaces/*": ["./controllers/interfaces/*"],
+        "@configs/*": ["./config/*"]
       }
   },
   "include": [

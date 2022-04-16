@@ -1,0 +1,1 @@
+CREATE database crud_jwt // Criar banco de dados
