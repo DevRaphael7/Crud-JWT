@@ -4,4 +4,5 @@ export interface Task{
     description: string;
     date: string;
     hourCreate: string;
+    userId: number;
 }

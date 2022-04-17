@@ -1,17 +1,12 @@
+import { MysqlError } from 'mysql';
+import { Query } from './../services/query.service';
 import { ControllerHttp } from './controllerHttp';
 import { User } from '@interfaces/auth-user.model';
 import { NextFunction, Request, Response } from 'Express';
 
-let usuarios: User[] = [
-    {
-        confirmPassword: '123',
-        password: '123',
-        email: 'raphael@email.com',
-        name: 'raphael'
-    }
-]
-
 export class Auth extends ControllerHttp {
+
+    private query: Query = new Query();
 
     constructor(){
         super();
@@ -29,9 +24,10 @@ export class Auth extends ControllerHttp {
                 return res.status(400).json(this.apiResponse(400, "Senha e confirmar senha diferentes"))
             }
 
-            const findUser = usuarios.filter(value => value.name == bodyRequest.name && value.email == bodyRequest.email)
+            const findUser = await this.query.select(`SELECT * FROM users where email = '${bodyRequest.email}' AND name = '${bodyRequest.name}'`) as User[]
             
             if(findUser.length > 0){
+                findUser[0].token = this.getToken(bodyRequest.name, bodyRequest.email)
                 return res.status(200).json(this.apiResponse(200, "Usuário encontrado", findUser[0]))
             }
 
@@ -49,15 +45,16 @@ export class Auth extends ControllerHttp {
             if(!(bodyRequest.name && bodyRequest.email && bodyRequest.password)) {
                 return res.status(400).json(this.apiResponse(400, "Valores inválidos"))
             }
-    
-            const findUser = usuarios.filter(value => value.name == bodyRequest.name && value.email == bodyRequest.email)
-            
-            if(findUser.length > 0) {
-                return res.status(200).json(this.apiResponse(400, "Usuário já cadastrado"))
+
+            let rowDB: Array<User> = await this.query.select(`SELECT * FROM users where email = '${bodyRequest.email}' AND name = '${bodyRequest.name}'`) as User[]
+
+            console.log(rowDB)
+
+            if(rowDB.length > 0){
+                return res.status(200).json(this.apiResponse(200, "Este usuário já existe"))
             }
-    
-            bodyRequest.token = this.getToken(bodyRequest.name, bodyRequest.email);
-            usuarios.push(bodyRequest)
+
+            this.query.insert('INSERT INTO users SET ?', bodyRequest)
     
             return res.status(200).json(this.apiResponse(200, "Usuário adicionado com sucesso"))
         } catch(ex){
