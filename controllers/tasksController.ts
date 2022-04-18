@@ -6,8 +6,6 @@ import { BackendRequest } from '@interfaces/backendRequest.mode'
 import { Request, Response } from "express";
 import { Search } from '@interfaces/search.model';
 
-
-
 export class TaskController extends ControllerHttp {
 
     private query: Query
@@ -35,9 +33,7 @@ export class TaskController extends ControllerHttp {
 
             const getUser = await this.query.select(`SELECT id FROM users where email = '${user.email}' AND name = '${user.name}'`) as User[]
 
-            console.log(value)
-
-            if(!getUser || getUser.length === 0 || !this.verifyTokenIsValid(user.token)) {
+            if(getUser.length === 0 || !this.verifyTokenIsValid(req.headers.authorization)) {
                 return res.status(400).json(this.apiResponse(400, "Usuário inválido ou não autorizado"))
             }
 
@@ -64,7 +60,7 @@ export class TaskController extends ControllerHttp {
                 return res.status(400).json(this.apiResponse(400, "Usuário não informado"))
             }
 
-            if(!this.verifyTokenIsValid(user.token)){
+            if(!this.verifyTokenIsValid(req.headers.authorization)){
                 return res.status(400).json(this.apiResponse(400, "Acesso negado"))
             }
 
@@ -97,7 +93,7 @@ export class TaskController extends ControllerHttp {
                 return res.status(400).json(this.apiResponse(400, "Usuário não informado"))
             }
 
-            if(!this.verifyTokenIsValid(user.token)){
+            if(!this.verifyTokenIsValid(req.headers.authorization)){
                 return res.status(400).json(this.apiResponse(400, "Acesso negado"))
             }
 
@@ -128,7 +124,7 @@ export class TaskController extends ControllerHttp {
 
             if(!(user.name && user.email && user.token)) return res.status(400).json(this.apiResponse(400, "Usuário não informado"))
             
-            if(!this.verifyTokenIsValid(user.token)) return res.status(400).json(this.apiResponse(400, "Acesso negado"))
+            if(!this.verifyTokenIsValid(req.headers.authorization)) return res.status(400).json(this.apiResponse(400, "Acesso negado"))
 
             if(!(value.name && value.date && value.description && value.hourCreate && value.id && value.userId)){
                 return res.status(400).json(this.apiResponse(400, "Tarefa inválida ou não informada"))
@@ -136,7 +132,7 @@ export class TaskController extends ControllerHttp {
 
             const getTasks = await this.query.select(`SELECT * FROM task where id = ${value.id}`) as Task[]
 
-            if(!getTasks) {
+            if(getTasks.length == 0) {
                 return res.status(400).json(this.apiResponse(400, "Tarefa inválida"))
             }
 

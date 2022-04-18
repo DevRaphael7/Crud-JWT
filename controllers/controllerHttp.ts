@@ -26,9 +26,14 @@ export class ControllerHttp {
         );
     }
 
-    public verifyTokenIsValid(token: string): boolean {
+    public verifyTokenIsValid(token: string | undefined): boolean {
+        if(!token) return false;
+        if(token.split('Bearer').length != 2) return false;
+
+        const bearerToken = token.split('Bearer')[1].replace(/\s+/g, '')
+        console.log(bearerToken)
         let tokenValid: boolean = true
-        jwt.verify(token, process.env.TOKEN_KEY as string, (error, _) => {
+        jwt.verify(bearerToken, process.env.TOKEN_KEY as string, (error, _) => {
             if(error){
                 tokenValid = false;
             }
