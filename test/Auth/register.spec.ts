@@ -13,7 +13,7 @@ describe("Test in userController (loginUser)", () => {
     it('should appear "Valores inválidos" (registerUser)', async () => {
         await request(app)
             .post("/auth/registerUser")
-            .send({} as User)
+            .send({})
             .expect(400, auth.apiResponse(400, "Valores inválidos"))
             .expect('Content-Type', /json/)
     });

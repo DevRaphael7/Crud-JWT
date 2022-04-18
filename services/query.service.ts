@@ -17,11 +17,14 @@ export class Query {
     }
 
     public insert(query: string, data: any) {
-        connection_db.query(query, data, (error, res) => {
-            if(error){
-                console.log(error)
-                throw error
-            }
+        connection_db.query(query, data, (error) => {
+            if(error) throw error
+        })
+    }
+
+    public updateTask(query: string, values: any) {
+        connection_db.query(query, values, (error) => {
+            if(error) throw error;
         })
     }
 }
