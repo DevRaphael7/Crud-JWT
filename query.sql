@@ -1,4 +1,4 @@
-CREATE database crud_jwt // Criar banco de dados
+CREATE database crud_jwt
 
 CREATE TABLE users (
 	name varchar(60) not null,
