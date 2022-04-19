@@ -1,7 +1,10 @@
+import { Query } from './../services/query.service';
 import { BackendResponse } from '@interfaces/backendResponse.model';
 import jwt from 'jsonwebtoken';
 
 export class ControllerHttp {
+
+    public query: Query = new Query();
 
     public apiResponse(statusCode: number, message: string, data: any = null): BackendResponse {
         return {

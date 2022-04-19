@@ -1,12 +1,9 @@
-import { MysqlError } from 'mysql';
 import { Query } from './../services/query.service';
 import { ControllerHttp } from './controllerHttp';
 import { User } from '@interfaces/auth-user.model';
 import { NextFunction, Request, Response } from 'Express';
 
 export class Auth extends ControllerHttp {
-
-    private query: Query = new Query();
 
     constructor(){
         super();

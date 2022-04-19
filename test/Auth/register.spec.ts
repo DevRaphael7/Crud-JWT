@@ -3,7 +3,7 @@ import { Auth } from '@controllers/authController';
 import request from "supertest";
 import { app } from 'serve';
 
-describe("Test in userController (loginUser)", () => {
+describe("Test in userController (registerUser)", () => {
     let auth: Auth;
 
     beforeEach( async () => {

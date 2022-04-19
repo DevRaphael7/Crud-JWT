@@ -8,11 +8,8 @@ import { Search } from '@interfaces/search.model';
 
 export class TaskController extends ControllerHttp {
 
-    private query: Query
-
     constructor(){
         super();
-        this.query = new Query();
     }
 
     public createTask = async (req: Request, res: Response) => {
@@ -23,11 +20,11 @@ export class TaskController extends ControllerHttp {
 
             const { user , value } = req.body as BackendRequest<Task>
 
-            if(!(user.name && user.email && user.token)) {
+            if(!(user.name && user.email)) {
                 return res.status(400).json(this.apiResponse(400, "Usuário não informado"))
             }
 
-            if(!(value.name && value.date && value.description && value.hourCreate)){
+            if(!(value.name && value.date && value.description && value.hourCreate && value.userId && value.id)){
                 return res.status(400).json(this.apiResponse(400, "Tarefa inválida ou não informada"))
             }
 
@@ -150,7 +147,7 @@ export class TaskController extends ControllerHttp {
     }
 
     private createTaskSql = (task: Task) => {
-        this.query.insert(` INSERT INTO 
+        this.query.insert(`INSERT INTO 
             task(name, description, date, hourCreate, userId) VALUES 
             ('${task.name}','${task.description}','${task.date}','${task.hourCreate}','${task.userId}')`, 
         null)

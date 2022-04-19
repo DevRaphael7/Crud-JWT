@@ -1,4 +1,4 @@
-CREATE database crud_jwt
+CREATE database crud_jwt;
 
 CREATE TABLE users (
 	name varchar(60) not null,
@@ -16,4 +16,4 @@ CREATE TABLE task(
     hourCreate TIME,
     userId int not null,
     PRIMARY KEY(id)
-)
+);

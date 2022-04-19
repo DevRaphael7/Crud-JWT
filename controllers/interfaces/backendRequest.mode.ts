@@ -6,5 +6,5 @@ export interface BackendRequest<ValueRequest> {
 interface UserData {
     name: string;
     email: string;
-    token: string;
+    token?: string;
 }
