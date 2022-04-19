@@ -64,12 +64,10 @@ describe('Test in tasksController (createTask)', () => {
                     email: '123'
                 },
                 value: {
-                    date: '',
-                    description: 'Teste unitário',
+                    description: '',
                     hourCreate: '12:30:20',
-                    name: 'Fazer testes unitários',
-                    userId: 13,
-                    id: ''
+                    name: '',
+                    userId: 13
                 }
             } as BackendRequest<Task>)
             .expect(400, auth.apiResponse(400, "Tarefa inválida ou não informada"))

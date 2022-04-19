@@ -15,6 +15,8 @@
     "mssql": "^4.3.9",
     "mysql": "^2.18.1",
     "mysql-utils": "^1.0.0",
+    "padstring": "^1.0.0",
+    "string.prototype.padstart": "^3.1.3",
     "typescript": "^4.6.3"
   },
   "name": "crud-jwt",
@@ -40,6 +42,7 @@
     "start": "nodemon -r tsconfig-paths/register serve.ts",
     "teste": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=jasmine.json",
     "connection": "ts-node -r tsconfig-paths/register database/connection.ts",
+    "date": "ts-node services/time.service.ts",
     "build": "rm -rf build/ && prettier --write source/ && tsc"
   },
   "keywords": [],

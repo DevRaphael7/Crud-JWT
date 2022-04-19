@@ -1,3 +1,4 @@
+import { Time } from '@services/time.service';
 import { User } from '@interfaces/auth-user.model';
 import { Query } from '@services/query.service';
 import { Task } from '@interfaces/tasks.model';
@@ -5,6 +6,11 @@ import { ControllerHttp } from './controllerHttp';
 import { BackendRequest } from '@interfaces/backendRequest.mode'
 import { Request, Response } from "express";
 import { Search } from '@interfaces/search.model';
+
+interface DateResponse {
+    hour: string;
+    date: string;
+}
 
 export class TaskController extends ControllerHttp {
 
@@ -24,9 +30,12 @@ export class TaskController extends ControllerHttp {
                 return res.status(400).json(this.apiResponse(400, "Usuário não informado"))
             }
 
-            if(!(value.name && value.date && value.description && value.hourCreate && value.userId && value.id)){
+            if(!(value.name && value.description)){
                 return res.status(400).json(this.apiResponse(400, "Tarefa inválida ou não informada"))
             }
+
+            [value.hourCreate, value.date] = [new Time().currentHour(), new Time().currentDate()]
+
 
             const getUser = await this.query.select(`SELECT id FROM users where email = '${user.email}' AND name = '${user.name}'`) as User[]
 
@@ -38,7 +47,15 @@ export class TaskController extends ControllerHttp {
 
             this.createTaskSql(value)
 
-            return res.status(200).json(this.apiResponse(200, "Tarefa criada"))
+            return res.status(200).json({
+                "statusCode": 200,
+                "data": {
+                    "date": value.date,
+                    "hour": value.hourCreate,
+                    "message": "Tarefa criada"
+                }
+            })
+
         } catch(ex){
             console.log(ex)
             return res.status(500).json(this.apiResponse(500, `Error ${ex}`))
