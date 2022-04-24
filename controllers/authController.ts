@@ -20,7 +20,7 @@ export class Auth extends ControllerHttp {
             if(bodyRequest.password != bodyRequest.confirmPassword) {
                 return res.status(400).json(this.apiResponse(400, "Senha e confirmar senha diferentes"))
             }
-
+  
             const findUser = await this.query.select(`SELECT * FROM users where email = '${bodyRequest.email}' AND name = '${bodyRequest.name}'`) as User[]
             
             if(findUser.length > 0){
@@ -28,7 +28,7 @@ export class Auth extends ControllerHttp {
                 return res.status(200).json(this.apiResponse(200, "Usuário encontrado", findUser[0]))
             }
 
-            return res.status(400).json(this.apiResponse(400, "Usuário inválido ou não encontrado"))
+            return res.status(401).json(this.apiResponse(401, "Usuário inválido ou não encontrado"))
         } catch(ex) {
             next(ex)
         }
