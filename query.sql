@@ -1,5 +1,7 @@
 CREATE database crud_jwt;
 
+use crud_jwt;
+
 CREATE TABLE users (
 	name varchar(60) not null,
     password varchar(12) not null,
