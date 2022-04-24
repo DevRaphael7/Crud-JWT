@@ -32,3 +32,7 @@ This Api is a simple API making in Node.js with *JWT(Json Web Token)*, *Unit Tes
     npm run connection ==> verify connection with your DATABASE.
 
 These commands you can change in package.json in "scripts"
+
+## Swagger
+
+In the route */swagger* open Swagger documentation of RESTAPI.
