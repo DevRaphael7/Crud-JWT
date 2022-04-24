@@ -1,4 +1,4 @@
-import { swagger_options } from './documentation/swagger-config';
+import { swagger_options } from '@documentation/swagger-config';
 import express, { Express } from 'express';
 import SwaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'

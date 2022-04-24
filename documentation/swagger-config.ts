@@ -1,5 +1,7 @@
 import { paths } from './paths';
-import { getUserRequest, getUserReqExample } from './components/getUser.component';
+import { getUserRequest, getUser200Response } from './components/getUser.component';
+import { registerUser200Response } from './components/registerUser.component';
+import { createTask } from './components/createTask.component';
 
 export const swagger_options = {
     definition: {
@@ -23,8 +25,16 @@ export const swagger_options = {
         paths: paths,
         components: {
             schemas: {
-                getUserReq: getUserRequest,
-                getUserReqExample: getUserReqExample
+                "GETUSER": {
+                    getUserReq: getUserRequest,
+                    getUser200Response: getUser200Response
+                },
+                "REGISTERUSER": {
+                    registerUser200Response: registerUser200Response
+                },
+                "CREATETASKS": {
+                    createTaskReq: createTask
+                }
             }
         }
     },

@@ -18,7 +18,8 @@
         "@routes/*": ["./routes/*"],
         "@interfaces/*": ["./controllers/interfaces/*"],
         "@configs/*": ["./config/*"],
-        "@services/*": ["./services/*"]
+        "@services/*": ["./services/*"],
+        "@documentation/*": ["./documentation/*"]
       }
   },
   "include": [

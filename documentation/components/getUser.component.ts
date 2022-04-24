@@ -22,11 +22,24 @@ export const getUserRequest = {
     }
 }
 
-export const getUserReqExample = {
-    "value": {
-        name: "Raphael Ramalho",
-        email: "raphael@email.com",
-        password: "190",
-        confirmPassword: "190"
+export const getUser200Response = {
+    properties: {
+        "statusCode": {
+            type: "number",
+            example: 200
+        },
+        "data": {
+            type: "object",
+            example: {
+                "value": {
+                    "name": "Raphael Ramalho",
+                    "password": "190",
+                    "email": "raphael@email.com",
+                    "id": 43,
+                    "token": "xxxxxxxx"
+                },
+                "message": "Usuário encontrado"
+            }
+        }
     }
 }
